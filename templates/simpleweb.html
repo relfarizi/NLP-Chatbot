@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Chat - Customer Module</title>
+<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+ 
+<div id="wrapper">
+    <div id="menu">
+        <p class="welcome">Welcome to our chatbot <b></b></p>
+        <p class="logout"><a id="exit" href="#">end session</a></p>
+        <div style="clear:both"></div>
+    </div>
+     
+    <div id="chatbox">
+        <p class="botText">
+            <span>Hi! I'm Candice your personal ChatBot ❤️</span>
+        </p>
+    </div>
+     
+    <div id="userInput">
+        <input id="textInput" type="text" name="msg" placeholder="Message" />
+        <!--
+        <input name="usermsg" type="text" id="usermsg" size="63" />
+        <input name="submitmsg" type="submit"  id="submitmsg" value="Send" />
+        -->
+    </div>
+</div>
+<script type="text/javascript">
+function getBotResponse() {
+          var rawText = $("#textInput").val();
+          var userHtml = '<p class="userText"><span>' + rawText + "</span></p>";
+          $("#textInput").val("");
+          $("#chatbox").append(userHtml);
+          document
+            .getElementById("userInput")
+            .scrollIntoView({ block: "start", behavior: "smooth" });
+          
+            
+          $.get("/get", { msg: rawText }).done(function(data) {
+            var botHtml = '<p class="botText"><span>' + data + "</span></p>";
+            $("#chatbox").append(botHtml);
+            document
+              .getElementById("userInput")
+              .scrollIntoView({ block: "start", behavior: "smooth" });
+          });
+        }
+
+        $("#textInput").keypress(function(e) {
+          if (e.which == 13) {
+            getBotResponse();
+          }
+        });
+</script>
+</body>
+</html>
